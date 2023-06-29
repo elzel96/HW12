@@ -13,6 +13,7 @@
 		795E8D362A41C4F200F61CE2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 795E8D342A41C4F200F61CE2 /* Main.storyboard */; };
 		795E8D382A41C4F300F61CE2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 795E8D372A41C4F300F61CE2 /* Assets.xcassets */; };
 		795E8D3B2A41C4F300F61CE2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 795E8D392A41C4F300F61CE2 /* LaunchScreen.storyboard */; };
+		795E8D482A4DBCFF00F61CE2 /* CircularProgressBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 795E8D472A4DBCFF00F61CE2 /* CircularProgressBarView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		795E8D372A41C4F300F61CE2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		795E8D3A2A41C4F300F61CE2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		795E8D3C2A41C4F300F61CE2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		795E8D472A4DBCFF00F61CE2 /* CircularProgressBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularProgressBarView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +87,7 @@
 			isa = PBXGroup;
 			children = (
 				795E8D322A41C4F200F61CE2 /* ViewController.swift */,
+				795E8D472A4DBCFF00F61CE2 /* CircularProgressBarView.swift */,
 				795E8D342A41C4F200F61CE2 /* Main.storyboard */,
 				795E8D392A41C4F300F61CE2 /* LaunchScreen.storyboard */,
 			);
@@ -163,6 +166,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				795E8D332A41C4F200F61CE2 /* ViewController.swift in Sources */,
+				795E8D482A4DBCFF00F61CE2 /* CircularProgressBarView.swift in Sources */,
 				795E8D2F2A41C4F200F61CE2 /* AppDelegate.swift in Sources */,
 				795E8D312A41C4F200F61CE2 /* SceneDelegate.swift in Sources */,
 			);
