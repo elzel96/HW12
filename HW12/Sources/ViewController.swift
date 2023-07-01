@@ -7,21 +7,21 @@
 
 import UIKit
 
-var isStarted = false // показывает запущен ли таймер или находится на паузе
-var isWorkTime = true // показывает запущен ли таймер для рабочего времени или нет
-
 class ViewController: UIViewController {
     
+    private var isStarted = false // показывает запущен ли таймер или находится на паузе
+    private var isWorkTime = true // показывает запущен ли таймер для рабочего времени или нет
     private var timer = Timer()
-    private let workTimeDuration = 10
-    private let restTimeDuration = 5
+    private let workTimeDuration = 10.0
+    private let restTimeDuration = 5.0
     private lazy var currentTime = workTimeDuration
+    private lazy var speed = 0.0
     
     // MARK: - UI Elements
     
     private lazy var timerLabel: UILabel = {
         let label = UILabel()
-        label.text = String(workTimeDuration)
+        label.text = String(Int(workTimeDuration))
         label.textAlignment = .center
         label.font = .systemFont(ofSize: 55)
         label.textColor = .systemGreen
@@ -85,65 +85,43 @@ class ViewController: UIViewController {
     @objc private func buttonTapped() {
         isStarted.toggle()
         
-        switch (isStarted, isWorkTime) {
-        case (true, true):
-            if timerLabel.text == String(workTimeDuration) {
-                circularProgressBarView.progressAnimation(duration: TimeInterval(Int(timerLabel.text!)!), from: 1, to: 0)
-            } else {
-                circularProgressBarView.resumeAnimation()
-            }
-            button.setImage(UIImage(systemName: "pause", withConfiguration: UIImage.SymbolConfiguration(pointSize: 50)), for: .normal)
-            button.tintColor = .systemGreen
-            timerLabel.textColor = .systemGreen
-            timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in self.timerLabel.text = String(Int(self.timerLabel.text!)! - 1)
-                
-                if self.timerLabel.text == "0" {
-                    timer.invalidate()
-                    isStarted.toggle()
-                    isWorkTime.toggle()
-                    self.currentTime = self.restTimeDuration
-                    self.timerLabel.text = String(self.currentTime)
-                    self.timerLabel.textColor = .systemRed
-                    self.button.setImage(UIImage(systemName: "play", withConfiguration: UIImage.SymbolConfiguration(pointSize: 50)), for: .normal)
-                    self.button.tintColor = .systemRed
-                    self.circularProgressBarView.resetAnimation()
-                }
-            }
-        case (true, false):
-            if timerLabel.text == String(restTimeDuration) {
-                circularProgressBarView.progressAnimation(duration: TimeInterval(Int(timerLabel.text!)!), from: 1, to: 0)
-            } else {
-                circularProgressBarView.resumeAnimation()
-            }
-            button.setImage(UIImage(systemName: "pause", withConfiguration: UIImage.SymbolConfiguration(pointSize: 50)), for: .normal)
-            button.tintColor = .systemRed
-            timerLabel.textColor = .systemRed
-            timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in self.timerLabel.text = String(Int(self.timerLabel.text!)! - 1)
-                
-                if self.timerLabel.text == "0" {
-                    timer.invalidate()
-                    isStarted.toggle()
-                    isWorkTime.toggle()
-                    self.currentTime = self.workTimeDuration
-                    self.timerLabel.text = String(self.currentTime)
-                    self.timerLabel.textColor = .systemGreen
-                    self.button.setImage(UIImage(systemName: "play", withConfiguration: UIImage.SymbolConfiguration(pointSize: 50)), for: .normal)
-                    self.button.tintColor = .systemGreen
-                    self.circularProgressBarView.resetAnimation()
-                }
-            }
-        case (false, false):
+        guard isStarted else {
             circularProgressBarView.pauseAnimation()
-            button.setImage(UIImage(systemName: "play", withConfiguration: UIImage.SymbolConfiguration(pointSize: 50)), for: .normal)
-            button.tintColor = .systemRed
-            timerLabel.textColor = .systemRed
             timer.invalidate()
-        case (false, true):
-            circularProgressBarView.pauseAnimation()
             button.setImage(UIImage(systemName: "play", withConfiguration: UIImage.SymbolConfiguration(pointSize: 50)), for: .normal)
-            button.tintColor = .systemGreen
-            timerLabel.textColor = .systemGreen
-            timer.invalidate()
+            return
         }
+        
+        circularProgressBarView.resumeAnimation()
+        timer = Timer.scheduledTimer(timeInterval: 0.01, target: self, selector: #selector(timerActivated), userInfo: nil, repeats: true)
+        button.setImage(UIImage(systemName: "pause", withConfiguration: UIImage.SymbolConfiguration(pointSize: 50)), for: .normal)
+    }
+
+    @objc private func timerActivated() {
+        let formatter = DateFormatter()
+        let rounded = speed.rounded(.up)
+        let date = Date(timeIntervalSince1970: TimeInterval(rounded))
+
+        formatter.dateFormat = "ss"
+        timerLabel.text = formatter.string(from: date)
+
+        guard rounded == 0 else {
+            speed -= 0.01
+            return
+        }
+        
+        if isWorkTime {
+            timerLabel.textColor = .systemGreen
+            button.tintColor = .systemGreen
+            currentTime = workTimeDuration
+            speed = workTimeDuration
+        } else {
+            timerLabel.textColor = .systemRed
+            button.tintColor = .systemRed
+            currentTime = restTimeDuration
+            speed = restTimeDuration
+        }
+
+        circularProgressBarView.progressAnimation(duration: currentTime, from: 1, to: 0, isWorkTime: &isWorkTime)
     }
 }
