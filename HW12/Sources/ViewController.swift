@@ -103,6 +103,7 @@ class ViewController: UIViewController {
 
         formatter.dateFormat = "mm:ss"
         timerLabel.text = formatter.string(from: date)
+        var color: CGColor
 
         guard currentTime <= 0 else {
             currentTime -= 0.01
