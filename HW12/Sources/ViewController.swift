@@ -99,29 +99,30 @@ class ViewController: UIViewController {
 
     @objc private func timerActivated() {
         let formatter = DateFormatter()
-        let rounded = speed.rounded(.up)
-        let date = Date(timeIntervalSince1970: TimeInterval(rounded))
+        let date = Date(timeIntervalSince1970: TimeInterval(currentTime))
 
-        formatter.dateFormat = "ss"
+        formatter.dateFormat = "mm:ss"
         timerLabel.text = formatter.string(from: date)
 
-        guard rounded == 0 else {
-            speed -= 0.01
+        guard currentTime <= 0 else {
+            currentTime -= 0.01
             return
         }
+        
+        isWorkTime.toggle()
         
         if isWorkTime {
             timerLabel.textColor = .systemGreen
             button.tintColor = .systemGreen
             currentTime = workTimeDuration
-            speed = workTimeDuration
+            color = UIColor.systemGreen.cgColor
         } else {
             timerLabel.textColor = .systemRed
             button.tintColor = .systemRed
             currentTime = restTimeDuration
-            speed = restTimeDuration
+            color = UIColor.systemRed.cgColor
         }
-
-        circularProgressBarView.progressAnimation(duration: currentTime, from: 1, to: 0, isWorkTime: &isWorkTime)
+        
+        circularProgressBarView.progressAnimation(duration: currentTime, from: 1, to: 0, color: color)
     }
 }
