@@ -62,21 +62,14 @@ class CircularProgressBarView: UIView {
         progressLayer.beginTime = timeSincePause
     }
 
-    func progressAnimation(duration: TimeInterval, from: CGFloat, to: CGFloat, isWorkTime: inout Bool) {
-        if isWorkTime {
-            progressLayer.strokeColor = UIColor.systemGreen.cgColor
-        } else {
-            progressLayer.strokeColor = UIColor.systemRed.cgColor
-        }
+    func progressAnimation(duration: TimeInterval, from: CGFloat, to: CGFloat, color: CGColor) {
+        progressLayer.strokeColor = color
         let circularProgressAnimation = CABasicAnimation(keyPath: "strokeEnd")
         progressLayer.strokeEnd = from
         circularProgressAnimation.duration = duration
         circularProgressAnimation.toValue = to
         circularProgressAnimation.fillMode = .forwards
         circularProgressAnimation.isRemovedOnCompletion = false
-        if progressLayer.zPosition == to {
-            isWorkTime.toggle()
-        }
         
         progressLayer.add(circularProgressAnimation, forKey: "progressAnim")
     }
